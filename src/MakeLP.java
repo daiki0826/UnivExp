@@ -10,6 +10,11 @@ public class MakeLP {
 	 * LPファイル作成クラス
 	 * 
 	 */
+	private int J;
+	private int M;
+	private int[] Kj;
+	private Double[] D;
+
 	public  MakeLP(Condition con) {
 		try {
 			//書き出すlpファイルの定義
@@ -17,16 +22,16 @@ public class MakeLP {
 			//変数の定義
 			int j,k,j1,j2,k1,k2,PM1,PM2;
 			//ジョブ数を条件クラス「Condition」から取得
-			int J = con.getJobNum();
+			this.J = con.getJobNum();
 			//機械台数を条件クラス「Condition」から取得
-			int M = con.getMachineNum();
+			this.M = con.getMachineNum();
 			//ジョブ毎の工程数を条件クラス「Condition」から取得
-			int []Kj= con.getProcessNum();
+			this.Kj= con.getProcessNum();
 			//ジョブの納期を条件クラス「Condition」から取得
-			Double[] D = con.getDue();
+			this.D = con.getDue();
 			
 		    int Count = 1; //制約式を数える
-		    M = 10000; //BigM法
+		    int T = 10000; //BigM法
 		    
 		    
 			/**
