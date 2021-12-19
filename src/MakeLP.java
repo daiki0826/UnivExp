@@ -13,7 +13,7 @@ public class MakeLP {
 	public  MakeLP(Condition con) {
 		try {
 			//書き出すlpファイルの定義
-			PrintWriter lp=new PrintWriter(new FileWriter(new File("/Users/nagatadaiki/ExpData/Data1/jobshop.lp")));
+			PrintWriter lp=new PrintWriter(new FileWriter(new File("/Users/nagatadaiki/ExpData/Data2/jobshop.lp")));
 			//変数の定義
 			int j,k,j1,j2,k1,k2,PM1,PM2;
 			//ジョブ数を条件クラス「Condition」から取得
@@ -135,39 +135,39 @@ public class MakeLP {
 				}
 			}
 			
-			//機械能力制約(1)bigMで表現
-			lp.println("\\機械能力制約(1)");
-			for(j1=1;j1<=J;j++) {
-				for(j2=(j1+1);j2<=J;j++) {
-					for(k1=1;k1<=Kj[j1];j++) {
-						PM1=con.getPM(j1,k1);
-						for(k2=1;k2<=Kj[j2];k2++) {
-							PM2 = con.getPM(j2, k2);
-							if(PM1==PM2) {
-								lp.println("_C"+Count+": ST_"+j1+"_"+k1+"- CT_"+j2+"_"+k2+"+"+M+"Y_"+j1+"_"+k1+"_"+j2+"_"+k2+">="+0);
-								Count++;
-							}
-						}
-					}
-				}
-			}
+			// //機械能力制約(1)bigMで表現
+			// lp.println("\\機械能力制約(1)");
+			// for(j1=1;j1<=J;j++) {
+			// 	for(j2=(j1+1);j2<=J;j++) {
+			// 		for(k1=1;k1<=Kj[j1];j++) {
+			// 			PM1=con.getPM(j1,k1);
+			// 			for(k2=1;k2<=Kj[j2];k2++) {
+			// 				PM2 = con.getPM(j2, k2);
+			// 				if(PM1==PM2) {
+			// 					lp.println("_C"+Count+": ST_"+j1+"_"+k1+"- CT_"+j2+"_"+k2+"+"+M+"Y_"+j1+"_"+k1+"_"+j2+"_"+k2+">="+0);
+			// 					Count++;
+			// 				}
+			// 			}
+			// 		}
+			// 	}
+			// }
 			
-			//機械能力制約(2)bigM法で表現
-			lp.println("\\機械能力制約(2)");
-			for(j1=1;j1<=J;j++) {
-				for(j2=(j1+1);j2<=J;j++) {
-					for(k1=1;k1<=Kj[j1];j++) {
-						PM1=con.getPM(j1,k1);
-						for(k2=1;k2<=Kj[j2];k2++) {
-							PM2 = con.getPM(j2, k2);
-							if(PM1==PM2) {
-								lp.println("_C"+Count+": ST_"+j2+"_"+k2+"- CT_"+j1+"_"+k1+"-"+M+"Y_"+j1+"_"+k1+"_"+j2+"_"+k2+">="+(-M));
-								Count++;
-							}
-						}
-					}
-				}
-			}
+			// //機械能力制約(2)bigM法で表現
+			// lp.println("\\機械能力制約(2)");
+			// for(j1=1;j1<=J;j++) {
+			// 	for(j2=(j1+1);j2<=J;j++) {
+			// 		for(k1=1;k1<=Kj[j1];j++) {
+			// 			PM1=con.getPM(j1,k1);
+			// 			for(k2=1;k2<=Kj[j2];k2++) {
+			// 				PM2 = con.getPM(j2, k2);
+			// 				if(PM1==PM2) {
+			// 					lp.println("_C"+Count+": ST_"+j2+"_"+k2+"- CT_"+j1+"_"+k1+"-"+M+"Y_"+j1+"_"+k1+"_"+j2+"_"+k2+">="+(-M));
+			// 					Count++;
+			// 				}
+			// 			}
+			// 		}
+			// 	}
+			// }
 			
 
 			/**
