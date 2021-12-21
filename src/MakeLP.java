@@ -24,6 +24,9 @@ public class MakeLP {
 				
 				for(j=1;j<=J;j++){
 					System.out.println("ジョブ"+j+"は"+Kj[j]+"工程です\n");
+					for(k=1;k<=Kj[j];k++){
+						System.out.println("工程"+k+"の作業時間は"+con.getPT(j, k)+"です\n");
+					}
 				}
 				int Count = 1; //制約式を数える
 				int L = 10000; //BigM法
@@ -79,6 +82,7 @@ public class MakeLP {
 				lp.println("\\各ジョブの納期遅れ定義");
 				for(j=1;j<=J;j++) {
 					lp.println("_C"+Count+": CT_"+j+Kj[j]+" - T_"+j+"> -"+D[j]);
+					Count++;
 				}
 
 				//処理完了時刻定義
@@ -99,12 +103,29 @@ public class MakeLP {
 					}
 				}
 
+//				//機械能力制約(1)アロー演算子で表現
+//				lp.println("\\機械能力制約(1)");
+//				for(j=1;j<=J;j++) {
+//					for(p=(j+1);p<=J;p++) {
+//						for(k=1;k<=Kj[j];k++) {
+//							PM1=con.getPM(j,k);
+//							for(q=1;q<=Kj[p];q++) {
+//								PM2 = con.getPM(p, q);
+//								if(PM1==PM2) {
+//									lp.println("_C"+Count+": y_"+j+"_"+p+"_"+k+"_"+q+"=0 -> ST_"+j+"_"+k+" - CT_"+p+"_"+q+">=0");
+//									Count++;
+//								}
+//							}
+//						}
+//					}
+//				}
+				
 				//機械能力制約(1)アロー演算子で表現
 				lp.println("\\機械能力制約(1)");
 				for(j=1;j<=J;j++) {
-					for(p=(j+1);p<=J;p++) {
-						for(k=1;k<=Kj[j];k++) {
-							PM1=con.getPM(j,k);
+					for(k=1;k<=Kj[j];k++) {
+						PM1=con.getPM(j,k);
+						for(p=j+1;p<=J;p++) {
 							for(q=1;q<=Kj[p];q++) {
 								PM2 = con.getPM(p, q);
 								if(PM1==PM2) {
@@ -115,13 +136,30 @@ public class MakeLP {
 						}
 					}
 				}
-
+				
+//				//機械能力制約(2)アロー演算子で表現
+//				lp.println("\\機械能力制約(2)");
+//				for(j=1;j<=J;j++) {
+//					for(p=(j+1);p<=J;p++) {
+//						for(k=1;k<=Kj[j];k++) {
+//							PM1=con.getPM(j,k);
+//							for(q=1;q<=Kj[p];q++) {
+//								PM2 = con.getPM(p, q);
+//								if(PM1==PM2) {
+//									lp.println("_C"+Count+": y_"+j+"_"+p+"_"+k+"_"+q+"=1 -> ST_"+p+"_"+q+" - CT_"+j+"_"+k+">=0");
+//									Count++;
+//								}
+//							}
+//						}
+//					}
+//				}
+				
 				//機械能力制約(2)アロー演算子で表現
 				lp.println("\\機械能力制約(2)");
 				for(j=1;j<=J;j++) {
-					for(p=(j+1);p<=J;p++) {
-						for(k=1;k<=Kj[j];k++) {
-							PM1=con.getPM(j,k);
+					for(k=1;k<=Kj[j];k++) {
+						PM1=con.getPM(j,k);
+						for(p=j+1;p<=J;p++) {
 							for(q=1;q<=Kj[p];q++) {
 								PM2 = con.getPM(p, q);
 								if(PM1==PM2) {
@@ -191,7 +229,11 @@ public class MakeLP {
 				}
 				lp.println();
 				
-				
+				/**
+				 * 変数型
+				 */
+				lp.println("binary");
+			
 				//決定変数y
 				lp.println("\\処理開始時刻設定");
 				for(j=1;j<=J;j++) {

@@ -40,7 +40,7 @@ public class JobCondition {
 				}
 				row++;
 			}
-			this.Kj=row; //読み込んだ行数はそのジョブの工程数と等しい.
+			this.Kj=row-1; //読み込んだ行数はそのジョブの工程数と等しい.
 			System.out.println("job.csvファイルの読み込みを完了しました.");
 		} catch (FileNotFoundException e) {
 			// TODO 自動生成された catch ブロック

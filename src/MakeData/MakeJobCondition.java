@@ -44,13 +44,13 @@ public class MakeJobCondition {
 		}
 	}
 	
-	//納期決定(納期=作業時間合計＊1.5とする)
+	//納期決定(納期=作業時間合計＊0.8とする)
 	public void setDue() {
 		int SumPT=0;
 		for(int k=1;k<=Kj;k++) {
 			SumPT = SumPT+this.PT.get(k-1);
 		}
-		Double due = SumPT*1.5;
+		Double due = SumPT*0.8;
 		this.due = due;
 	}
 
