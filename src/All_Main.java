@@ -14,7 +14,9 @@ public class All_Main {
 			System.out.println(String.format("ジョブ%dの納期は%fです",j,condition.getDue()[j]));
 		}
 		
-		MakeLP makeLP = new MakeLP(condition);
+		MakeLP makeLP2 = new MakeLP(condition);
+		//MakeLP makeLP = new MakeLP(condition);
+		//Woker_MakeLP workerLP = new Woker_MakeLP(condition);
 		
 		
 		
