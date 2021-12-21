@@ -81,7 +81,8 @@ public class MakeLP {
 				//納期遅れ定義(最終工程の終了時刻CT-納期遅れT =　納期D
 				lp.println("\\各ジョブの納期遅れ定義");
 				for(j=1;j<=J;j++) {
-					lp.println("_C"+Count+": CT_"+j+Kj[j]+" - T_"+j+"> -"+D[j]);
+					lp.println("_C"+Count+": T_"+j+"-CT_"+j+"_"+Kj[j]+"> -"+D[j]);
+					//lp.println("_C"+Count+": CT_"+j+Kj[j]+" - T_"+j+"> -"+D[j]);
 					Count++;
 				}
 
