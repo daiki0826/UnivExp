@@ -16,6 +16,7 @@ public class SolveLP_WA {
             //目的関数の値を取得
 			double objval = cplex.getObjValue();
 			System.out.println("目的関数 :"+objval);
+			cplex.end();
             
         } catch (IloException e) {
 			// TODO 自動生成された catch ブロック
