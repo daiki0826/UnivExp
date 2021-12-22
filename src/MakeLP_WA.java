@@ -101,13 +101,12 @@ public class MakeLP_WA {
 					}
 				}
 			}
-			
 
 			//作業時間平均の定義(μ=PT*α)
 			lp.println("\\作業時間平均定義");
-			for(j=1;j<=J;j++){
-				for(k=1;k<=Kj[j];k++){
-					for(i=1;i<=I;i++){
+			for(i=1;i<=I;i++){
+				for(j=1;j<=J;j++){
+					for(k=1;k<=Kj[j];k++){
 						for(m=1;m<=M;m++){
 							lp.println("_C"+Count+": μ_"+i+"_"+j+"_"+k+"_"+m+" = "+jobCon.getPT(j,k)*workerCon.getAlpha(i,m));
 							Count++;
@@ -115,12 +114,26 @@ public class MakeLP_WA {
 					}
 				}
 			}
+			
+
+			// //作業時間平均の定義(μ=PT*α)
+			// lp.println("\\作業時間平均定義");
+			// for(j=1;j<=J;j++){
+			// 	for(k=1;k<=Kj[j];k++){
+			// 		for(i=1;i<=I;i++){
+			// 			for(m=1;m<=M;m++){
+			// 				lp.println("_C"+Count+": μ_"+i+"_"+j+"_"+k+"_"+m+" = "+jobCon.getPT(j,k)*workerCon.getAlpha(i,m));
+			// 				Count++;
+			// 			}
+			// 		}
+			// 	}
+			// }
 
 			//作業時間標準偏差の定義(σ=PT*0.2*β)
 			lp.println("\\作業時間標準偏差定義");
-			for(j=1;j<=J;j++){
-				for(k=1;k<=Kj[j];k++){
-					for(i=1;i<=I;i++){
+			for(i=1;i<=I;i++){
+				for(j=1;j<=J;j++){
+					for(k=1;k<=Kj[j];k++){
 						for(m=1;m<=M;m++){
 							lp.println("_C"+Count+": sig_"+i+"_"+j+"_"+k+"_"+m+" = "+jobCon.getPT(j,k)*0.2*workerCon.getBeta(i,m));
 							Count++;
@@ -129,11 +142,24 @@ public class MakeLP_WA {
 				}
 			}
 
+			// //作業時間標準偏差の定義(σ=PT*0.2*β)
+			// lp.println("\\作業時間標準偏差定義");
+			// for(j=1;j<=J;j++){
+			// 	for(k=1;k<=Kj[j];k++){
+			// 		for(i=1;i<=I;i++){
+			// 			for(m=1;m<=M;m++){
+			// 				lp.println("_C"+Count+": sig_"+i+"_"+j+"_"+k+"_"+m+" = "+jobCon.getPT(j,k)*0.2*workerCon.getBeta(i,m));
+			// 				Count++;
+			// 			}
+			// 		}
+			// 	}
+			// }
+
 			//作業時間変動係数CVの定義(CV=σ/μ)
 			lp.println("\\作業時間変動係数定義");
-			for(j=1;j<=J;j++){
-				for(k=1;k<=Kj[j];k++){
-					for(i=1;i<=I;i++){
+			for(i=1;i<=I;i++){
+				for(j=1;j<=J;j++){
+					for(k=1;k<=Kj[j];k++){
 						for(m=1;m<=M;m++){
 							lp.println("_C"+Count+": CV_"+i+"_"+j+"_"+k+"_"+m+" = "+0.2*workerCon.getBeta(i,m)/workerCon.getBeta(i,m));
 							Count++;
@@ -141,6 +167,19 @@ public class MakeLP_WA {
 					}
 				}
 			}
+
+			// //作業時間変動係数CVの定義(CV=σ/μ)
+			// lp.println("\\作業時間変動係数定義");
+			// for(j=1;j<=J;j++){
+			// 	for(k=1;k<=Kj[j];k++){
+			// 		for(i=1;i<=I;i++){
+			// 			for(m=1;m<=M;m++){
+			// 				lp.println("_C"+Count+": CV_"+i+"_"+j+"_"+k+"_"+m+" = "+0.2*workerCon.getBeta(i,m)/workerCon.getBeta(i,m));
+			// 				Count++;
+			// 			}
+			// 		}
+			// 	}
+			// }
 
 			//各機械に配置する作業者は1人の制約
 			lp.println("\\作業者配置人数制約");
