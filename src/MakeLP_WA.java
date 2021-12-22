@@ -145,29 +145,33 @@ public class MakeLP_WA {
 			//各機械に配置する作業者は1人の制約
 			lp.println("\\作業者配置人数制約");
 			for(m=1;m<=M;m++){
-				lp.print("\n_C"+Count+":");
+				lp.print("_C"+Count+":");
 				for(i=1;i<=I;i++){
-					lp.print("_C"+Count+": x_"+i+"_"+m);
+					lp.print("x_"+i+"_"+m);
 					if(i!=I){
 						lp.print(" + ");
 					}
 				}
 				Count++;
+				lp.println();
 			}
-
+			lp.println();
+			
 			//各作業者が使用する機械は1台
 			lp.println("\\機械使用台数制約");
 			for(i=1;i<=I;i++){
-				lp.print("\n_C"+Count+":");
+				lp.print("_C"+Count+":");
 				for(m=1;m<=M;m++){
-					lp.print("_C"+Count+": x_"+i+"_"+m);
+					lp.print("x_"+i+"_"+m);
 					if(m!=M){
 						lp.print(" + ");
 					}
 				}
 				Count++;
+				lp.println();
 			}
-
+			lp.println();
+			
 			/**
 			* 変数範囲設定
 			*/
