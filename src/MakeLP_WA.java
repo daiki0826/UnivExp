@@ -96,6 +96,7 @@ public class MakeLP_WA {
 					for(k=1;k<=Kj[j];k++){
 						for(m=1;m<=M;m++){
 							lp.println("_C"+Count+": CV_"+i+"_"+j+"_"+k+"_"+m+">= 0");
+							Count++;
 						}
 					}
 				}
@@ -116,7 +117,7 @@ public class MakeLP_WA {
 			}
 
 			//作業時間標準偏差の定義(σ=PT*0.2*β)
-			lp.println("\\作業時間平均定義");
+			lp.println("\\作業時間標準偏差定義");
 			for(j=1;j<=J;j++){
 				for(k=1;k<=Kj[j];k++){
 					for(i=1;i<=I;i++){
@@ -128,12 +129,103 @@ public class MakeLP_WA {
 				}
 			}
 
+			//作業時間変動係数CVの定義(CV=σ/μ)
+			lp.println("\\作業時間変動係数定義");
+			for(j=1;j<=J;j++){
+				for(k=1;k<=Kj[j];k++){
+					for(i=1;i<=I;i++){
+						for(m=1;m<=M;m++){
+							lp.println("_C"+Count+": CV_"+i+"_"+j+"_"+k+"_"+m+" = "+0.2*workerCon.getBeta(i,m)/workerCon.getBeta(i,m));
+							Count++;
+						}
+					}
+				}
+			}
+
 			//各機械に配置する作業者は1人の制約
+			lp.println("\\作業者配置人数制約");
+			for(m=1;m<=M;m++){
+				lp.print("\n_C"+Count+":");
+				for(i=1;i<=I;i++){
+					lp.print("_C"+Count+": x_"+i+"_"+m);
+					if(i!=I){
+						lp.print(" + ");
+					}
+				}
+				Count++;
+			}
 
-			//各作業者が使用する機会は1台
+			//各作業者が使用する機械は1台
+			lp.println("\\機械使用台数制約");
+			for(i=1;i<=I;i++){
+				lp.print("\n_C"+Count+":");
+				for(m=1;m<=M;m++){
+					lp.print("_C"+Count+": x_"+i+"_"+m);
+					if(m!=M){
+						lp.print(" + ");
+					}
+				}
+				Count++;
+			}
 
+			/**
+			* 変数範囲設定
+			*/
+			lp.println("Bounds");
+			//作業時間平均範囲
+			lp.println("\\作業時間平均範囲");
+			for(i=1;i<=I;i++){
+				for(j=1;j<=J;j++){
+					for(k=1;k<=Kj[j];k++){
+						for(m=1;m<=M;m++){
+							lp.println("0<=μ_"+i+"_"+j+"_"+k+"_"+m+"<=100");
+						}
+					}
+				}
+			}
+			lp.println();
+
+			//作業時間標準偏差範囲
+			lp.println("\\作業時間標準偏差範囲");
+			for(i=1;i<=I;i++){
+				for(j=1;j<=J;j++){
+					for(k=1;k<=Kj[j];k++){
+						for(m=1;m<=M;m++){
+							lp.println("0<=sig_"+i+"_"+j+"_"+k+"_"+m+"<=100");
+						}
+					}
+				}
+			}
+			lp.println();
+
+			//作業時間変動係数範囲
+			lp.println("\\作業時間変動係数範囲");
+			for(i=1;i<=I;i++){
+				for(j=1;j<=J;j++){
+					for(k=1;k<=Kj[j];k++){
+						for(m=1;m<=M;m++){
+							lp.println("0<=CV_"+i+"_"+j+"_"+k+"_"+m+"<=100");
+						}
+					}
+				}
+			}
+			lp.println();
+
+			/**
+			* 変数型
+			*/
+			lp.println("binary");
+
+			lp.println("\\作業者配置決定変数");
+			for(i=1;i<=I;i++){
+				for(m=1;m<=M;m++){
+					lp.println("x_"+i+"_"+m);
+				}
+			}
+			lp.println();
+			lp.println("end");
 			lp.close();
-
+			System.out.println("作業者配置LPファイル出力完了");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -236,7 +236,7 @@ public class MakeLP {
 				lp.println("binary");
 			
 				//決定変数y
-				lp.println("\\処理開始時刻設定");
+				lp.println("\\先行関係決定変数");
 				for(j=1;j<=J;j++) {
 					for(p=1;p<=J;p++) {
 						for(k=1;k<=Kj[j];k++) {
