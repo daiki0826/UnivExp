@@ -150,6 +150,8 @@ public class MakeLP_WA {
 					lp.print("x_"+i+"_"+m);
 					if(i!=I){
 						lp.print(" + ");
+					}else {
+						lp.print(" = 1");
 					}
 				}
 				Count++;
@@ -165,6 +167,8 @@ public class MakeLP_WA {
 					lp.print("x_"+i+"_"+m);
 					if(m!=M){
 						lp.print(" + ");
+					}else {
+						lp.print(" = 1");
 					}
 				}
 				Count++;

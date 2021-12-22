@@ -21,7 +21,7 @@ public class All_Main {
 		String WorkerDataPath = "/Users/nagatadaiki/ExpData/WorkerSet/3Worker/Set1";
 		WorkerCondition workerCon = new WorkerCondition(WorkerDataPath, M);
 		MakeLP_WA makeLP_WA = new MakeLP_WA(workerCon,condition);
-		
+		SolveLP_WA solveLP_WA = new SolveLP_WA("/Users/nagatadaiki/ExpData/Data2/worker.lp");
 		
 		
 		
