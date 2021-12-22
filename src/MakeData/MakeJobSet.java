@@ -12,7 +12,7 @@ import java.nio.file.Paths;
  * データセットを生成するクラス
  * 実行するとデータセットのディレクトリを作成してその中にジョブ毎の条件を記載したcsvファイルを生成.
  */
-public class MakeData {
+public class MakeJobSet {
 	
 	public static void main(String[] args) {
 		
@@ -21,7 +21,7 @@ public class MakeData {
 		
 		MakeCondition exp = new MakeCondition(J, M);
 		try {
-			exportCSV(exp, J);
+			exportJobCSV(exp, J);
 		} catch (IOException e) {
 			// TODO 自動生成された catch ブロック
 			e.printStackTrace();
@@ -32,7 +32,7 @@ public class MakeData {
 	}
 	
 	//csvファイルを生成するクラス
-	public static void exportCSV(MakeCondition con, int J) throws IOException {
+	public static void exportJobCSV(MakeCondition con, int J) throws IOException {
 		//保存先の絶対パス
 		String path = "/Users/nagatadaiki/ExpData/";
 		
