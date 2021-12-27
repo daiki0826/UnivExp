@@ -1,7 +1,14 @@
+import static java.nio.file.StandardCopyOption.*;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 public class All_Main {
 
 	public static void main(String[] args) {
-		
 		//実験条件
 		int J=3;
 		int M=5;
@@ -19,15 +26,24 @@ public class All_Main {
 		 * ・一回の実験データ出力などを包括するディレクトリ
 		 */
 		String  expDirectoryPath = "/Users/nagatadaiki/ExpData/exp2";
-		
 		/*
 		 * 実験実行
 		 */
 		Experiment exp = new Experiment(jobSetPath, workerSetPath, expDirectoryPath, J, M);
-//		exp.makeLP_WA();
-//		exp.solveLP_WA();
+		//入力として投入するファイルを実験用ディレクトリにコピーしておく．
+		String src = jobSetPath+"/Due.csv";
+		String dest = expDirectoryPath+"/Due.csv";
+		Path srcPath = Paths.get(src);
+		Path destPath = Paths.get(dest);
+		try {
+			Files.copy(srcPath, destPath, REPLACE_EXISTING);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		exp.makeLP_WA();
+		exp.solveLP_WA();
 		exp.makeLP();
-		exp.copy();
 		exp.solveLP();
 		
 

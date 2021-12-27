@@ -35,22 +35,6 @@ public class Experiment {
 			 System.out.println("実験ディレクトリの作成に成功しました");
 		 }
 		
-//		//入力データをexpディクトリにコピーしておく
-//		Path jobSet = Paths.get(this.jobSetPath);
-//		Path dueFile = Paths.get(this.dueFilePath);
-//		Path workerSet = Paths.get(this.workerSetPath);
-//		Path expDirectory = Paths.get(this.expDirectoryPath+"/Due.csv");
-//		try {
-//			//ジョブセットと作業者セットの入力ファイルを実験ファイルにコピー(すでにある場合は置き換える)
-//			Files.copy(jobSet, expDirectory,REPLACE_EXISTING);
-//			Files.copy(dueFile, expDirectory,REPLACE_EXISTING);
-//			Files.copy(workerSet, expDirectory,REPLACE_EXISTING);
-//			System.out.println("入力データコピー完了");
-//		} catch (IOException e) {
-//			// TODO 自動生成された catch ブロック
-//			e.printStackTrace();
-//		}
-		
 		//ジョブセットのCSVファイルからジョブ条件クラス"Condition.java"のインスタンス作成
 		this.inputJobCon = new Condition(J, M, this.jobSetPath);
 		//作業者セットのCSVファイルから作業者条件クラス"WorkerCondition.java"のインスタンス作成
@@ -86,23 +70,23 @@ public class Experiment {
 		output.MakeGunt(expDirectoryPath);
 	}
 	
-	public void copy() {
-		//入力データをexpディクトリにコピーしておく
-				Path jobSet = Paths.get(this.jobSetPath);
-				Path dueFile = Paths.get(this.dueFilePath);
-				Path workerSet = Paths.get(this.workerSetPath);
-				Path expDirectory = Paths.get(this.expDirectoryPath+"/Due.csv");
-				try {
-					//ジョブセットと作業者セットの入力ファイルを実験ファイルにコピー(すでにある場合は置き換える)
-					//Files.copy(jobSet, expDirectory,REPLACE_EXISTING);
-					Files.copy(dueFile, expDirectory,REPLACE_EXISTING);
-					//Files.copy(workerSet, expDirectory,REPLACE_EXISTING);
-					System.out.println("入力データコピー完了");
-				} catch (IOException e) {
-					// TODO 自動生成された catch ブロック
-					e.printStackTrace();
-				}
-	}
+	// public void copy() {
+	// 	//入力データをexpディクトリにコピーしておく
+	// 	Path jobSet = Paths.get(this.jobSetPath);
+	// 	Path dueFile = Paths.get(this.dueFilePath);
+	// 	Path workerSet = Paths.get(this.workerSetPath);
+	// 	Path expDirectory = Paths.get(this.expDirectoryPath+"/JobSet/Due.csv");
+	// 	try {
+	// 		//ジョブセットと作業者セットの入力ファイルを実験ファイルにコピー(すでにある場合は置き換える)
+	// 		//Files.copy(jobSet, expDirectory,REPLACE_EXISTING);
+	// 		Files.copy(dueFile, expDirectory,REPLACE_EXISTING);
+	// 		//Files.copy(workerSet, expDirectory,REPLACE_EXISTING);
+	// 		System.out.println("入力データコピー完了");
+	// 	} catch (IOException e) {
+	// 		// TODO 自動生成された catch ブロック
+	// 		e.printStackTrace();
+	// 	}
+	// }
 	
 
 }
