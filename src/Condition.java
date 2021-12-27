@@ -106,6 +106,20 @@ public class Condition {
 		return PM[k];
 	}
 	
+	//ジョブj工程kの作業時間平均を取得
+	public double getMyu(int j,int k) {
+		JobCondition job = this.JobCons[j];
+		double[] myu = job.getMyu();
+		return myu[k];
+	}
+	
+	//ジョブj工程kの作業時間標準偏差を取得
+		public double getSig(int j,int k) {
+			JobCondition job = this.JobCons[j];
+			double[] sig = job.getSig();
+			return sig[k];
+		}
+	
 	//ジョブ条件配列を取得
 	public JobCondition[] getJobConditions() {
 		return this.JobCons;

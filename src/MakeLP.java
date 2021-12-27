@@ -90,7 +90,8 @@ public class MakeLP {
 				lp.println("\\ジョブの各工程の終了時刻定義");
 				for(j=1;j<=J;j++) {
 					for(k=1;k<=Kj[j];k++) {
-						lp.println("_C"+Count+": CT_"+j+"_"+k+"- ST_"+j+"_"+k+"="+con.getPT(j,k));
+						lp.println("_C"+Count+": CT_"+j+"_"+k+"- ST_"+j+"_"+k+"="+con.getMyu(j, k)+3*con.getSig(j, k));
+						//lp.println("_C"+Count+": CT_"+j+"_"+k+"- ST_"+j+"_"+k+"="+con.getPT(j,k));
 						Count++;
 					}
 				}

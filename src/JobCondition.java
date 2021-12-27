@@ -20,6 +20,8 @@ public class JobCondition {
 		//処理工程数は各ジョブで異なるがとりあえず機械台数Mに合わせてPTとPMの配列のサイズを確保
 		this.PT = new int[M+1];
 		this.PM = new int[M+1];
+		this.myu = new double[M+1];
+		this.sig = new double[M+1];
 		this.JobNum = j;
 		this.setJobCondition(DataSetPath+"/job"+String.valueOf(j)+".csv");
 	}
@@ -97,6 +99,14 @@ public class JobCondition {
 	
 	public int[] getPM() {
 		return this.PM;
+	}
+	
+	public double[] getMyu() {
+		return this.myu;
+	}
+	
+	public double[] getSig() {
+		return this.sig;
 	}
 	
 

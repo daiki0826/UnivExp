@@ -1,6 +1,5 @@
 import static java.nio.file.StandardCopyOption.*;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -32,7 +31,7 @@ public class All_Main {
 		Experiment exp = new Experiment(jobSetPath, workerSetPath, expDirectoryPath, J, M);
 		//入力として投入するファイルを実験用ディレクトリにコピーしておく．
 		String src = jobSetPath+"/Due.csv";
-		String dest = expDirectoryPath+"/Due.csv";
+		String dest = expDirectoryPath+"/JobSet/Due.csv";
 		Path srcPath = Paths.get(src);
 		Path destPath = Paths.get(dest);
 		try {

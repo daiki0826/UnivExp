@@ -2,7 +2,6 @@ import ilog.concert.IloException;
 import ilog.concert.IloLPMatrix;
 import ilog.cplex.IloCplex;
 
-
 public class SolveLP {
     private double[][] GUNTST;	//ジョブの工程ごとの処理開始時刻
 	private double[][] GUNTCT;	//ジョブの工程ごとの処理完了時刻

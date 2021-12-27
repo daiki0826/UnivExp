@@ -1,10 +1,4 @@
-import static java.nio.file.StandardCopyOption.*;
-
 import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
 /*
  * 一回の実験を行うクラス
@@ -44,6 +38,7 @@ public class Experiment {
 	//作業者配置LPファイル作成
 	public void makeLP_WA() {
 		MakeLP_WA makeLP_WA = new MakeLP_WA(this.inputWorkerCon, this.inputJobCon,expDirectoryPath);
+		System.out.println("作業者配置問題のLPファイルを作成しました");
 	}
 	
 	//作業者配置問題求解
@@ -51,13 +46,17 @@ public class Experiment {
 		String lpFilePath = expDirectoryPath+"/worker.lp";
 		SolveLP_WA solveLP_WA = new SolveLP_WA(lpFilePath, this.inputJobCon);
 		solveLP_WA.exportCSV(jobSetPath, expDirectoryPath);
+		System.out.println("作業者配置問題を求解できました");
 	}
 	
 	//ジョブショップ問題LPファイル作成
 	public void makeLP() {
 		//作業者配置決定後のCSVファイルからジョブ毎の条件をインポートして条件クラスを生成．
-		Condition detailCondition = new Condition(J,M,expDirectoryPath+"/JobSet");
-		MakeLP makeLP = new MakeLP(detailCondition, expDirectoryPath);
+//		Condition detailCondition = new Condition(J,M,expDirectoryPath+"/JobSet");
+//		MakeLP makeLP = new MakeLP(detailCondition, expDirectoryPath);
+//		System.out.println("ジョブショップ問題のLPファイルを作成しました");
+		
+		MakeLP makeLP = new MakeLP(inputJobCon, expDirectoryPath);
 	}
 	
 	//ジョブショップ問題求解してxmlファイル作成
@@ -68,6 +67,7 @@ public class Experiment {
 		double[][]CT = solveLP.getGUNTCT();
 		Output output = new Output(this.inputJobCon,ST,CT);
 		output.MakeGunt(expDirectoryPath);
+		System.out.println("ジョブショップ問題を求解できました");
 	}
 	
 	// public void copy() {
