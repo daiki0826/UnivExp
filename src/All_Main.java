@@ -27,6 +27,7 @@ public class All_Main {
 //		exp.makeLP_WA();
 //		exp.solveLP_WA();
 		exp.makeLP();
+		exp.copy();
 		exp.solveLP();
 		
 

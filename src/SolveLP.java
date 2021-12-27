@@ -6,6 +6,7 @@ import ilog.cplex.IloCplex;
 public class SolveLP {
     private double[][] GUNTST;	//ジョブの工程ごとの処理開始時刻
 	private double[][] GUNTCT;	//ジョブの工程ごとの処理完了時刻
+	private double[] Tj;	//各ジョブの納期遅れ
 	private int J; //ジョブ数
 	private int M; //機械台数
 	private int I; //作業者数
@@ -24,7 +25,7 @@ public class SolveLP {
 
 		GUNTST = new double[J+1][M+1];
 		GUNTCT = new double[J+1][M+1];
-
+		Tj = new double[J+1];
 
 
 		try {
@@ -55,17 +56,31 @@ public class SolveLP {
 				System.out.print(" "+name[i]+" = ");
 				System.out.println(" "+value[i]);
 			}
-
-			//ジョブj工程kの処理開始時刻及び処理完了時刻をソルバーから取得
+			
+			//各ジョブの納期遅れをソルバーから取得
+			for(int j=1;j<=J;j++) {
+				Tj[j] = value[Count];
+				Count++;
+			}
+			//ジョブj工程kの処理開始時刻及び処理開始時刻をソルバーから取得
 			for(int j=1;j<=J;j++) {
 				for(int k=1;k<=Kj[j];k++) {
 					GUNTST[j][k] = value[Count];
-					GUNTCT[j][k] = value[Count]+condition.getPT(j,k);
 					Count++;
+					System.out.println("ジョブ"+j+"工程"+k+"の処理開始時刻="+GUNTST[j][k]);
 				}
 			}
 			System.out.println();
 
+			//ジョブj工程kの処理開始時刻及び処理完了時刻をソルバーから取得
+			for(int j=1;j<=J;j++) {
+				for(int k=1;k<=Kj[j];k++) {
+					GUNTCT[j][k] = value[Count];
+					Count++;
+					System.out.println("ジョブ"+j+"工程"+k+"の処理完了時刻="+GUNTCT[j][k]);
+				}
+			}
+			System.out.println();
 			
 			for(int j=1;j<=J;j++) {
 				for(int p=1;p<=J;p++) {

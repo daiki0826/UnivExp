@@ -45,7 +45,7 @@ public class Output {
 					bw.newLine();
 					bw.write("<開始時刻>"+String.valueOf(beginHour)+" : "+String.valueOf(beginMinute)+" : 00"+"</開始時刻>");
 					bw.newLine();
-					bw.write("<終了時刻>"+String.valueOf(beginHour)+" : "+String.valueOf(beginMinute)+" : 00"+"</終了時刻>");
+					bw.write("<終了時刻>"+String.valueOf(endHour)+" : "+String.valueOf(endMinute)+" : 00"+"</終了時刻>");
 					bw.newLine();
 					bw.write("<資源番号>"+"Machine"+condition.getPM(j, k)+"</資源番号>");
 					bw.newLine();

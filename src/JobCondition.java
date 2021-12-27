@@ -11,6 +11,8 @@ public class JobCondition {
 	private int Kj; //工程数
 	private int[] PT; //各工程の標準作業時間
 	private int[] PM; //各工程の作業機械番号
+	private double[] myu;	//各工程の作業時間平均
+	private double[] sig; //作業時間標準偏差
 	
 	
 	//コンストラクタ(ジョブのインスタンス作成)
@@ -32,11 +34,31 @@ public class JobCondition {
 			br = new BufferedReader(isp);
 			String line;//csvファイルから読み込んだ一行分の文字列
 			int row=0;//何行目か
+			String[] columns = null;
+			String[] data = new String[6];
 			while((line = br.readLine())!=null){
+				int columnNum = 0;	//インポートするcsvファイルは何列あるか数える．
+				if(row==0) {
+					columns = line.split(",");
+				}else {
+					for(String column : columns) {
+						columnNum++;
+						System.out.println(column);
+					}
+					System.out.println("csvファイルの列の数="+columnNum);
+				}
 				if(row>0) {
-					String data[] = line.split(",");
-					this.PM[row] = Integer.parseInt(data[1]);
-					this.PT[row] = Integer.parseInt(data[2]);
+					if(columnNum == 3) { //csvファイルの列が３列ならば(工程番号,PM,PT)
+						data = line.split(",");
+						this.PM[row] = Integer.parseInt(data[1]);
+						this.PT[row] = Integer.parseInt(data[2]);
+					}else if(columnNum == 6) { //csvファイルの列が６列ならば(工程番号,PM,PT,worker,μ,σ)
+						data = line.split(",");
+						this.PM[row] = Integer.parseInt(data[1]);
+						this.PT[row] = Integer.parseInt(data[2]);
+						this.myu[row] = Double.parseDouble(data[4]);
+						this.sig[row] = Double.parseDouble(data[5]);
+					}
 				}
 				row++;
 			}
