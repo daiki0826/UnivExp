@@ -1,4 +1,7 @@
 package MakeData;
+
+import java.util.Random;
+
 /*
 * 作業者生成クラス
 */
@@ -31,27 +34,31 @@ public class MakeWorker {
     //熟練度の区分によって乱数の範囲を設定
     //上級者(0.6<=α<=1.0),中級者(0.8<=α<=1.2),初級者(1.0<=α<=1.4)
     public void setAlpha(){
+    	Random rand = new Random();
         this.alpha = new double[this.M+1];
         switch(skill_level){
             case 1:
                 for(int k=1;k<=this.M;k++){
                     //0.6~1.0(0.1刻み)の一様乱数を生成
                     Double value = ((double) RandomNumber.createUniformRand(5,6))/10;
-                    this.alpha[k] = value;
+                    double randomVal = rand.nextDouble();
+                    this.alpha[k] = value+randomVal;
                 }
                 break;
             case 2:
                 for(int k=1;k<=this.M;k++){
                     //0.8~1.2(0.1刻み)の一様乱数を生成
                     Double value = ((double) RandomNumber.createUniformRand(5,8))/10;
-                    this.alpha[k] = value;
+                    double randomVal = rand.nextDouble();
+                    this.alpha[k] = value+randomVal;
                 }
                 break;
             case 3:
                 for(int k=1;k<=this.M;k++){
                     //1.0~1.4(0.1刻み)の一様乱数を生成
                     Double value = ((double) RandomNumber.createUniformRand(5,10))/10;
-                    this.alpha[k] = value;
+                    double randomVal = rand.nextDouble();
+                    this.alpha[k] = value+randomVal;
                 }
                 break;
         }
@@ -61,27 +68,34 @@ public class MakeWorker {
     //熟練度の区分によって乱数の範囲を設定
     //上級者(0.6<=α<=1.0),中級者(0.8<=α<=1.2),初級者(1.0<=α<=1.4)
     public void setBeta(){
+    	Random rand = new Random();
         this.beta = new double[this.M+1];
         switch(skill_level){
             case 1:
                 for(int k=1;k<=this.M;k++){
                     //0.6~1.0(0.1刻み)の一様乱数を生成
                     Double value = ((double) RandomNumber.createUniformRand(5,6))/10;
-                    this.beta[k] = value;
+                    //this.beta[k] = value;
+                    double randomVal = rand.nextDouble();
+                    this.beta[k] = value+randomVal;
                 }
                 break;
             case 2:
                 for(int k=1;k<=this.M;k++){
                     //0.8~1.2(0.1刻み)の一様乱数を生成
                     Double value = ((double) RandomNumber.createUniformRand(5,8))/10;
-                    this.beta[k] = value;
+                    //this.beta[k] = value;
+                    double randomVal = rand.nextDouble();
+                    this.beta[k] = value+randomVal;
                 }
                 break;
             case 3:
                 for(int k=1;k<=this.M;k++){
                     //1.0~1.4(0.1刻み)の一様乱数を生成
                     Double value = ((double) RandomNumber.createUniformRand(5,10))/10;
-                    this.beta[k] = value;
+                    //this.beta[k] = value;
+                    double randomVal = rand.nextDouble();
+                    this.beta[k] = value+randomVal;
                 }
                 break;
         }

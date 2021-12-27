@@ -17,7 +17,7 @@ public class MakeJobSet {
 	public static void main(String[] args) {
 		
 		int J=3;
-		int M=3;
+		int M=5;
 		
 		MakeCondition exp = new MakeCondition(J, M);
 		try {
@@ -37,7 +37,7 @@ public class MakeJobSet {
 		String path = "/Users/nagatadaiki/ExpData/";
 		
 		//新しいデータセットを生成するときは「Data」の後の数字を変更すること!
-		String dataSetNum = "Data2/Condition";
+		String dataSetNum = "Data3/Condition";
 		
 		//指定のパスにディレクトリを作成(指定のパスは"/Users/nagatadaiki/ExpData/Data2/Condition")
 		Path p = Paths.get(path,dataSetNum);

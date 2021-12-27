@@ -6,11 +6,11 @@ import java.io.PrintWriter;
 
 public class MakeLP {
 
-    public MakeLP(Condition con){
+    public MakeLP(Condition con,String expDirectoryPath){
         //書き出すlpファイルの定義
 			
 			try {
-				PrintWriter lp = new PrintWriter(new FileWriter(new File("/Users/nagatadaiki/ExpData/Data2/jobshop.lp")));
+				PrintWriter lp = new PrintWriter(new FileWriter(new File(expDirectoryPath+"/jobshop.lp")));
 				//変数の定義
 				int j,k,p,q,PM1,PM2;
 				//ジョブ数を条件クラス「Condition」から取得

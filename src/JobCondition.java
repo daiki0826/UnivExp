@@ -19,7 +19,7 @@ public class JobCondition {
 		this.PT = new int[M+1];
 		this.PM = new int[M+1];
 		this.JobNum = j;
-		this.setJobCondition(DataSetPath+"job"+String.valueOf(j)+".csv");
+		this.setJobCondition(DataSetPath+"/job"+String.valueOf(j)+".csv");
 	}
 	
 	//ジョブ条件をcsvファイルから読み込む

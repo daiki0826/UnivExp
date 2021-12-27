@@ -22,8 +22,10 @@ public class MakeJobCondition {
 	
 	//ジョブの処理工程数を乱数で決定(M-4~Mの一様乱数)
 	public void setKj(int M) {
-		int Kj = RandomNumber.createUniformRand(1, M-1);
-		this.Kj = Kj;
+//		int Kj = RandomNumber.createUniformRand(1, M-1);
+//		this.Kj = Kj;
+		//とりあえず工程数は機械台数と同じにする
+		this.Kj = M;
 	}
 	
 	//ジョブの各工程の標準処理時間PTを決定(10~20の一様乱数)

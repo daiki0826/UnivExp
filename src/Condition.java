@@ -31,7 +31,7 @@ public class Condition {
 		BufferedReader br = null;
 		try {
 			//指定のファイルを読み込む
-			String path = this.DataSetPath+"Due.csv";
+			String path = this.DataSetPath+"/Due.csv";
 			FileInputStream inputFile  = new FileInputStream(path);
 			InputStreamReader isp = new InputStreamReader(inputFile);
 			br = new BufferedReader(isp);
@@ -102,7 +102,7 @@ public class Condition {
 	//ジョブj工程kを処理する機械番号を取得
 	public int getPM(int j, int k) {
 		JobCondition job = this.JobCons[j];
-		int[] PM=job.getPT();
+		int[] PM=job.getPM();
 		return PM[k];
 	}
 	

@@ -1,20 +1,29 @@
 import ilog.concert.IloException;
+import ilog.concert.IloLPMatrix;
 import ilog.cplex.IloCplex;
 
 
 public class SolveLP {
-    int[][] GUNTST;				//ジョブの工程ごとの処理開始時刻
-	int[][] GUNTCT;				//ジョブの工程ごとの処理完了時刻
+    private double[][] GUNTST;	//ジョブの工程ごとの処理開始時刻
+	private double[][] GUNTCT;	//ジョブの工程ごとの処理完了時刻
+	private int J; //ジョブ数
+	private int M; //機械台数
+	private int I; //作業者数
+	private int[] Kj; //各ジョブの工程数
+	private Condition condition; //作業者配置を決定するための入力データとなる各ジョブの条件
 
 	public SolveLP(String file, Condition condition) {
 
-		int i,count;
-		int j,k,m,j1,j2,k1,k2;
-		int J = condition.getJobNum();
-		int K = condition.getMachineNum();
+		//出力される変数の数を数える
+    	int Count = 0;
+		this.J = condition.getJobNum();
+		this.M = condition.getMachineNum();
+		this.I = condition.getMachineNum();
+    	this.Kj = condition.getProcessNum();
+    	this.condition = condition;
 
-		GUNTST = new int[J+1][K+1];
-		GUNTCT = new int[J+1][K+1];
+		GUNTST = new double[J+1][M+1];
+		GUNTCT = new double[J+1][M+1];
 
 
 
@@ -22,9 +31,6 @@ public class SolveLP {
 			IloCplex cplex=new IloCplex();
 
 			cplex.setParam(IloCplex.IntParam.MIPDisplay, 0);
-			//cplex.setParam(IloCplex.IntParam.IntSolLim ,0);
-
-			//cplex.setParam(IloCplex.);
 
 			//解くlpファイル指定
 			cplex.importModel(file); 
@@ -34,62 +40,44 @@ public class SolveLP {
 			//目的関数の値を取得
 			double objval = cplex.getObjValue();
 			System.out.println("目的関数 :"+objval);
-//			//出た解をxに前から順番に出力
-//			IloLPMatrix lp = (IloLPMatrix) cplex.LPMatrixIterator().next();
-//			double[] x=(cplex.getValues(lp));
-//			int[] value=new int[50000];   //cplexで解いた値
-//			String[] name=new String[50000];  //cplexで解いた解の変数名
-//			double v= cplex.getObjValue();
-//
-//
-//			for (i = 0; i < x.length; i++) {
-//				name[i]=lp.getNumVar(i).getName();
-//				value[i]=(int) Math.round(x[i]);
-//
-//				System.out.print(" "+name[i]+" = ");
-//				System.out.println(" "+value[i]);
-//			}
-//
-//			//result.setName(name);
-//			//result.setValue(value);
-//			System.out.println();
-//			System.out.println("x.length = "+x.length);
-//			System.out.println("SUM_L = "+v);
-//
-//			count=0;
-//			int sumL=0;
-//			for(j=1;j<=J;j++) {
-//				System.out.println("L_"+j+" = "+value[count]);
-//				sumL += x[count];
-//				count++;
-//			}
-//			System.out.println();
-//
-//			for(j=1;j<=J;j++) {
-//				for(k=1;k<=K;k++) {
-//					GUNTST[j][k] = value[count];
-//					GUNTCT[j][k] = value[count]+condition.getPT(j, k);
-//
-//					count++;
-//				}
-//			}
-//			System.out.println();
-//
-//			
-//			for(j1=1;j1<=J;j1++) {
-//				for(j2=(j1+1);j2<=J;j2++) {
-//					for(k1=1;k1<=K;k1++) {
-//						m = condition.get_m_n(j1,k1);
-//						for(k2=1;k2<=K;k2++) {
-//							if(m==condition.get_m_n(j2,k2)) {
-//								//System.out.println("y_"+j1+"_"+k1+"_"+j2+"_"+k2+" = "+value[count]);
-//								count++;
-//							}
-//						}
-//					}
-//				}
-//			}
-//			System.out.println();
+			//出た解をxに前から順番に出力
+			IloLPMatrix lp = (IloLPMatrix) cplex.LPMatrixIterator().next();
+			double[] x=(cplex.getValues(lp));
+			int[] value=new int[50000];   //cplexで解いた値
+			String[] name=new String[50000];  //cplexで解いた解の変数名
+			double v= cplex.getObjValue();
+
+
+			for (int i = 0; i < x.length; i++) {
+				name[i]=lp.getNumVar(i).getName();
+				value[i]=(int) Math.round(x[i]);
+
+				System.out.print(" "+name[i]+" = ");
+				System.out.println(" "+value[i]);
+			}
+
+			//ジョブj工程kの処理開始時刻及び処理完了時刻をソルバーから取得
+			for(int j=1;j<=J;j++) {
+				for(int k=1;k<=Kj[j];k++) {
+					GUNTST[j][k] = value[Count];
+					GUNTCT[j][k] = value[Count]+condition.getPT(j,k);
+					Count++;
+				}
+			}
+			System.out.println();
+
+			
+			for(int j=1;j<=J;j++) {
+				for(int p=1;p<=J;p++) {
+					for(int k=1;k<=Kj[j];k++) {
+						for(int q=1;q<=Kj[j];q++) {
+							System.out.println("y_"+j+"_"+p+"_"+k+"_"+q+" = "+value[Count]);
+								Count++;
+						}
+					}
+				}
+			}
+			System.out.println();
 
 			cplex.end();
 
@@ -103,12 +91,12 @@ public class SolveLP {
 
 
 
-	public int[][] getGUNTST() {
+	public double[][] getGUNTST() {
 		return this.GUNTST;
 	}
 
 
-	public int[][] getGUNTCT() {
+	public double[][] getGUNTCT() {
 		return this.GUNTCT;
 	}
 }

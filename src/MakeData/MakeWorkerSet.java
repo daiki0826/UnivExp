@@ -12,7 +12,7 @@ public class MakeWorkerSet {
     public static void main(String[] args) {
 		
         //機械台数(ここを変更すれば任意の人数の作業者セットを作成できる)
-		int M=3;
+		int M=5;
        
         //作業者を機械台数分だけ生成
 		MakeWorker[] workers = new MakeWorker[M+1];
