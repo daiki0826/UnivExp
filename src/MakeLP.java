@@ -6,11 +6,11 @@ import java.io.PrintWriter;
 
 public class MakeLP {
 
-    public MakeLP(Condition con,String expDirectoryPath){
-        //書き出すlpファイルの定義
-			
+    public MakeLP(Condition con,double margin){
+
 			try {
-				PrintWriter lp = new PrintWriter(new FileWriter(new File(expDirectoryPath+"/jobshop.lp")));
+				//書き出すlpファイルの定義
+				PrintWriter lp = new PrintWriter(new FileWriter(new File(Constant.expPath+"/jobshop_"+String.valueOf(margin)+"σ.lp")));
 				//変数の定義
 				int j,k,p,q,PM1,PM2;
 				//ジョブ数を条件クラス「Condition」から取得
@@ -22,12 +22,7 @@ public class MakeLP {
 				//ジョブの納期を条件クラス「Condition」から取得
 				Double[] D = con.getDue();
 				
-				for(j=1;j<=J;j++){
-					System.out.println("ジョブ"+j+"は"+Kj[j]+"工程です\n");
-					for(k=1;k<=Kj[j];k++){
-						System.out.println("工程"+k+"の作業時間は"+con.getPT(j, k)+"です\n");
-					}
-				}
+
 				int Count = 1; //制約式を数える
 				int L = 10000; //BigM法
 
@@ -90,7 +85,8 @@ public class MakeLP {
 				lp.println("\\ジョブの各工程の終了時刻定義");
 				for(j=1;j<=J;j++) {
 					for(k=1;k<=Kj[j];k++) {
-						lp.println("_C"+Count+": CT_"+j+"_"+k+"- ST_"+j+"_"+k+"="+con.getMyu(j, k)+3*con.getSig(j, k));
+						double PT = con.getMyu(j, k)+margin*con.getSig(j, k); //marginの値で余力の大きさ決定
+						lp.println("_C"+Count+": CT_"+j+"_"+k+"- ST_"+j+"_"+k+"="+PT);
 						//lp.println("_C"+Count+": CT_"+j+"_"+k+"- ST_"+j+"_"+k+"="+con.getPT(j,k));
 						Count++;
 					}
@@ -104,6 +100,7 @@ public class MakeLP {
 						Count++;
 					}
 				}
+				
 
 //				//機械能力制約(1)アロー演算子で表現
 //				lp.println("\\機械能力制約(1)");

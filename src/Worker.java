@@ -9,14 +9,12 @@ public class Worker {
     private int workerNum;
     private double[] alpha;
     private double[] beta;
-    private int M;
 
     //コンストラクタ(作業者のインスタンス作成)
-    public Worker(int i,int M,String fileName){
+    public Worker(int i,String fileName){
         this.workerNum = i;
-        this.M = M;
-        this.alpha = new double[M+1];
-        this.beta = new double[M+1];
+        this.alpha = new double[Constant.M+1];
+        this.beta = new double[Constant.M+1];
 		this.setWorkerCondition(fileName);
     }
 

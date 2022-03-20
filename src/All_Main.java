@@ -1,70 +1,74 @@
-import static java.nio.file.StandardCopyOption.*;
-
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-
 public class All_Main {
 
 	public static void main(String[] args) {
-		//実験条件
-		int J=3;
-		int M=5;
 		
 		/*
-		 * 入力ファイルパス定義
-		 *	・ジョブ条件フォルダの絶対パス
-		 *	・作業者条件フォルダの絶対パス
+		 * 実験開始
 		 */
-		String jobSetPath = "/Users/nagatadaiki/ExpData/JobSet/Data3";
-		String workerSetPath = "/Users/nagatadaiki/ExpData/WorkerSet/5Worker/Set1";
+//		//実験クラスを作成
+//		System.out.println("実験を開始します");
+//		Experiment exp = new Experiment(); 
+//		//実験に用いるジョブセットと作業者セットを実験フォルダにコピーしておく(記録用)
+//		exp.copy(); 
+//		//ログファイルにジョブセットパスと作業者セットパスを記録
+//		LogFile.writeLog(Constant.expPath, "ジョブセットパス = "+Constant.jobSetPath);
+//		LogFile.writeLog(Constant.expPath, "作業者セットパス = "+Constant.workerSetPath+"\n");
+//		//作業者配置問題を求解
+//		exp.makeLP_WA();
+//		exp.solveLP_WA();
+//		//ジョブショップスケジューリング問題を求解
+//		exp.makeLP();
+//		exp.solveLP();
+//		//作業者ランダム配置実験
+//		//exp.RandomWA();
+//		System.out.println("実験を終了します");
 		
 		/*
-		 * 実験データパス定義
-		 * ・一回の実験データ出力などを包括するディレクトリ
+		 * 実験終了
 		 */
-		String  expDirectoryPath = "/Users/nagatadaiki/ExpData/exp2";
-		/*
-		 * 実験実行
-		 */
-		Experiment exp = new Experiment(jobSetPath, workerSetPath, expDirectoryPath, J, M);
-		//入力として投入するファイルを実験用ディレクトリにコピーしておく．
-		String src = jobSetPath+"/Due.csv";
-		String dest = expDirectoryPath+"/JobSet/Due.csv";
-		Path srcPath = Paths.get(src);
-		Path destPath = Paths.get(dest);
-		try {
-			Files.copy(srcPath, destPath, REPLACE_EXISTING);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		for(int count=1;count<=3;count++) { //ジョブセットまたは作業者セットを変更して複数回試行するループ
+			System.out.println("実験を開始します");
+			//ジョブセット，作業者セット，実験結果ファイルのパスを指定
+			//String workerpath_common = Constant.workerSetPath;
+			String jobsetpath_common = Constant.jobSetPath;
+			String expPath_common = Constant.expPath;
+			
+			switch(count) {
+			case 1:
+				Constant.jobSetPath = Constant.jobSetPath+"納期短";
+				Constant.expPath =Constant.expPath+"納期短";
+				break;
+			case 2:
+				Constant.jobSetPath = Constant.jobSetPath+"納期中";
+				Constant.expPath =Constant.expPath+"納期中";
+				break;
+			case 3:
+				Constant.jobSetPath = Constant.jobSetPath+"納期長";
+				Constant.expPath = Constant.expPath+"納期長";
+				break;
+			}
+			//実験クラスを作成
+			Experiment exp = new Experiment(); 
+			//実験に用いるジョブセットと作業者セットを実験フォルダにコピーしておく(記録用)
+			exp.copy(); 
+			//ログファイルにジョブセットパスと作業者セットパスを記録
+			LogFile.writeLog(Constant.expPath, "ジョブセットパス = "+Constant.jobSetPath);
+			LogFile.writeLog(Constant.expPath, "作業者セットパス = "+Constant.workerSetPath+"\n");
+			
+			//作業者配置問題を求解
+			exp.makeLP_WA();
+			exp.solveLP_WA();
+			//ジョブショップスケジューリング問題を求解
+			exp.makeLP();
+			exp.solveLP();
+			//作業者ランダム配置実験
+			//exp.RandomWA();
+			System.out.println("実験を終了します");
+			Constant.jobSetPath = jobsetpath_common;
+			Constant.expPath = expPath_common;
 		}
-		exp.makeLP_WA();
-		exp.solveLP_WA();
-		exp.makeLP();
-		exp.solveLP();
-		
-
-		
-		
-//		//ジョブデータディレクトリパス
-//		String DataSetpath = "/Users/nagatadaiki/ExpData/JobSet/Data3/";
-//		Condition condition = new Condition(J, M, DataSetpath);
-//		for(int j=1;j<=J;j++) {
-//			System.out.println(String.format("ジョブ%dの納期は%fです",j,condition.getDue()[j]));
-//		}
-		
-		// MakeLP makeLP = new MakeLP(condition);
-		// SolveLP solveLP = new SolveLP("/Users/nagatadaiki/ExpData/Data2/jobshop.lp",condition);
-
-		//作業者セットデータディレクトリパス
-//		String WorkerDataPath = "/Users/nagatadaiki/ExpData/WorkerSet/5Worker/Set1";
-//		WorkerCondition workerCon = new WorkerCondition(WorkerDataPath, M);
-//		MakeLP_WA makeLP_WA = new MakeLP_WA(workerCon,condition);
-//		SolveLP_WA solveLP_WA = new SolveLP_WA("/Users/nagatadaiki/ExpData/exp1/worker.lp",condition);
-		
 		
 	}
 
 }
+

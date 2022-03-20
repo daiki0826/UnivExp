@@ -5,21 +5,17 @@
 public class WorkerCondition {
 
     private Worker[] workers;
-    private String DataSetPath;
-    private int M;
 
     //作業者条件のコンストラクタ
-    public WorkerCondition(String FilePath,int M){
-        this.M = M;
-        this.DataSetPath = FilePath;
+    public WorkerCondition(){
         setWorkers();
     }
 
     //作業者をM人生成
     public void setWorkers(){
-        workers = new Worker[this.M+1];
-        for(int i=1;i<=M;i++){
-            workers[i] = new Worker(i, M, this.DataSetPath);
+        workers = new Worker[Constant.M+1];
+        for(int i=1;i<=Constant.M;i++){
+            workers[i] = new Worker(i,Constant.workerSetPath);
         }
     }
 

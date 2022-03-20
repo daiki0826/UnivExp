@@ -6,6 +6,7 @@ public class MakeCondition {
 	private int J; //ジョブ数
 	private int M; //機械台数
 	private Double[] Due; //各ジョブの納期
+	private double[] SumPT; //各ジョブの総作業時間
 	private MakeJobCondition[] JobCons; //各ジョブの条件
 	
 	/*
@@ -15,6 +16,7 @@ public class MakeCondition {
 		this.J = J;
 		this.M = M;
 		this.setJobCondition();
+		this.set_SumPT();
 		this.setDue();
 	}
 	
@@ -31,6 +33,14 @@ public class MakeCondition {
 		this.Due = new Double[J+1];
 		for(int j=1;j<=J;j++) {
 			this.Due[j]=this.JobCons[j].getDue();
+		}
+	}
+	
+	//各ジョブの納期を取り出して納期配列に格納
+	public void set_SumPT() {
+		this.SumPT = new double[J+1];
+		for(int j=1;j<=J;j++) {
+			this.SumPT[j]=this.JobCons[j].get_SumPT();
 		}
 	}
 	
@@ -68,6 +78,10 @@ public class MakeCondition {
 	
 	public Double[] getDue() {
 		return this.Due;
+	}
+	
+	public double[] get_SumPT() {
+		return this.SumPT;
 	}
 	
 }

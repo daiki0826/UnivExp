@@ -20,28 +20,28 @@ public class SolveLP_WA {
 	private double[][][][] myu; //作業者iが機械mでジョブj工程kを処理する作業時間平均μ(i,m,j,k)
 	private double[][][][] sig;	//作業者iが機械mでジョブj工程kを処理する作業時間標準偏差σ(i,m,j,k)
 	private double[][] CV;  //ジョブj工程kの作業時間変動係数
-	private double objval;
+	private double objval; //目的間数値
 	private int J; //ジョブ数
 	private int M; //機械台数
 	private int I; //作業者数
 	private int[] Kj; //各ジョブの工程数
 	private Condition condition; //作業者配置を決定するための入力データとなる各ジョブの条件
 	
-    public SolveLP_WA(String file,Condition condition){
+    public SolveLP_WA(String file){
     	
     	//出力される変数の数を数える
     	int Count = 0;
     	//各種条件を取得
-    	this.J = condition.getJobNum();
-    	this.M = condition.getMachineNum();
-    	this.I = condition.getMachineNum();
+    	this.condition = Constant.jobCon;
+    	this.J = Constant.J;
+    	this.M = Constant.M;
+    	this.I = Constant.M;
     	this.Kj = condition.getProcessNum();
-    	this.condition = condition;
     	
     	//出力される解を保存
     	this.sol_x = new int[I+1][M+1];
     	this.myu = new double[M+1][M+1][J+1][M+1]; //[機械番号][ジョブ番号][工程番号]
-    	this.sig = new double[M+1][M+1][M+1][M+1]; //[機械番号][ジョブ番号][工程番号]
+    	this.sig = new double[M+1][M+1][J+1][M+1]; //[機械番号][ジョブ番号][工程番号]
     	this.CV = new double[J+1][M+1];
     	
     	
@@ -62,6 +62,7 @@ public class SolveLP_WA {
             //目的関数の値を取得
 			this.objval = cplex.getObjValue();
 			System.out.println("目的関数 :"+objval);
+			LogFile.writeLog(Constant.expPath, "WA_OBJValue = "+objval);
 			
 			//解をコンソールに出力して確認する
 			System.out.println("x.length = "+x.length);
@@ -71,17 +72,19 @@ public class SolveLP_WA {
 
 				System.out.print(" "+name[i]+" = ");
 				System.out.println(" "+value[i]);
+				LogFile.writeLog(Constant.expPath," "+name[i]+" = "+value[i]);
 			}
 			
 			//決定変数xを取得
 			for(int i=1;i<=I;i++) {
 				for(int m=1;m<=M;m++) {
 					this.sol_x[i][m] = (int)value[Count];
-					System.out.println("決定変数x_"+i+"_"+m+" = "+this.sol_x[i][m]);
+					//LogFile.writeLog(destFilePath,"決定変数x_"+i+"_"+m+" = "+this.sol_x[i][m]);
+					//System.out.println("決定変数x_"+i+"_"+m+" = "+this.sol_x[i][m]);
 					Count++;
 				}
 			}
-			System.out.println("決定変数xの解は"+Count+"まで");
+			//System.out.println("決定変数xの解は"+Count+"まで");
 			System.out.println();
 		
 			//作業時間平均μを取得
@@ -90,13 +93,14 @@ public class SolveLP_WA {
 					for(int j=1;j<=J;j++) {
 						for(int k=1;k<=Kj[j];k++) {
 							this.myu[i][m][j][k] = value[Count];
-							System.out.println("μ_"+i+"_"+m+"_"+j+"_"+k+" = "+this.myu[i][m][j][k]);
+							//LogFile.writeLog(destFilePath,"μ_"+i+"_"+m+"_"+j+"_"+k+" = "+this.myu[i][m][j][k]);
+							//System.out.println("μ_"+i+"_"+m+"_"+j+"_"+k+" = "+this.myu[i][m][j][k]);
 							Count++;
 						}
 					}
 				}
 			}
-			System.out.println("作業時間平均の解は"+Count+"まで");
+			//System.out.println("作業時間平均の解は"+Count+"まで");
 			System.out.println();
 			
 			//作業時間標準偏差σを取得
@@ -105,13 +109,14 @@ public class SolveLP_WA {
 					for(int j=1;j<=J;j++) {
 						for(int k=1;k<=Kj[j];k++) {
 							this.sig[i][m][j][k] = value[Count];
-							System.out.println("μ_"+i+"_"+m+"_"+j+"_"+k+" = "+this.sig[i][m][j][k]);
+							//LogFile.writeLog(destFilePath,"sig_"+i+"_"+m+"_"+j+"_"+k+" = "+this.sig[i][m][j][k]);
+							//System.out.println("sig_"+i+"_"+m+"_"+j+"_"+k+" = "+this.sig[i][m][j][k]);
 							Count++;
 						}
 					}
 				}
 			}
-			System.out.println("作業時間標準偏差の解は"+Count+"まで");
+			//System.out.println("作業時間標準偏差の解は"+Count+"まで");
 			System.out.println();
 			
 			//作業時間変動係数CVを取得
@@ -121,7 +126,8 @@ public class SolveLP_WA {
 						for(int j=1;j<=J;j++) {
 							for(int k=1;k<=Kj[j];k++) {
 								CV[j][k] = value[Count];
-								System.out.println("CV_"+i+"_"+m+"_"+j+"_"+k+" = "+this.CV[j][k]);
+								//LogFile.writeLog(destFilePath,"CV_"+i+"_"+m+"_"+j+"_"+k+" = "+this.CV[j][k]);
+								//System.out.println("CV_"+i+"_"+m+"_"+j+"_"+k+" = "+this.CV[j][k]);
 								Count++;
 							}
 						}
@@ -134,7 +140,7 @@ public class SolveLP_WA {
 					}
 				}
 			}
-			System.out.println("作業時間変動係数の解は"+Count+"まで");
+			//System.out.println("作業時間変動係数の解は"+Count+"まで");
 			System.out.println();
 			
 			//計算終了
@@ -165,8 +171,10 @@ public class SolveLP_WA {
     /*
      * 作業者割当決定後の作業時間平均μと作業時間標準偏差σをcsvファイルに出力するメソッド
      */
-    public void exportCSV(String JobSetPath, String destFilePath) {
+    public void exportCSV(String destFilePath) {
     	
+    	
+    	//各ジョブの条件を記載したファイルを実験ディレクトリに出力
     	for(int j=1;j<=this.J;j++) {
     		try {
     			FileWriter fw = new FileWriter(destFilePath+"/Job"+j+".csv", false);
@@ -195,14 +203,15 @@ public class SolveLP_WA {
 	            	int PM = condition.getPM(j, k);
 	            	for(int i=1;i<=I;i++) {
 	            		if(sol_x[i][PM]==1) {
+	            			//LogFile.writeLog(destFilePath, "x_"+String.valueOf(i)+"_"+String.valueOf(PM)+"=1");
 	            			double myu = this.myu[i][PM][j][k];
 	            			double sig = this.sig[i][PM][j][k];
 	            			int worker = i;
 	            			Myu = String.valueOf(myu);
 	            			Sig = String.valueOf(sig);
 	            			workerNum = String.valueOf(worker);
-	            			System.out.println("μ("+PM+","+j+","+k+")="+Myu);
-	            			System.out.println("sig("+PM+","+j+","+k+")="+Sig);
+	            			//System.out.println("μ("+PM+","+j+","+k+")="+Myu);
+	            			//System.out.println("sig("+PM+","+j+","+k+")="+Sig);
 	            		}
 	            	}
 	            	pw.print(processNum);

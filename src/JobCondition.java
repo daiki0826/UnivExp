@@ -45,9 +45,9 @@ public class JobCondition {
 				}else {
 					for(String column : columns) {
 						columnNum++;
-						System.out.println(column);
+						//System.out.println(column);
 					}
-					System.out.println("csvファイルの列の数="+columnNum);
+					//System.out.println("csvファイルの列の数="+columnNum);
 				}
 				if(row>0) {
 					if(columnNum == 3) { //csvファイルの列が３列ならば(工程番号,PM,PT)

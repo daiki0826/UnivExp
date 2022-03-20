@@ -16,7 +16,7 @@ public class MakeJobCondition {
 		this.JobNum = j;
 		setKj(M);
 		setPT();
-		setPM();
+		setPM(M);
 		setDue();
 	}
 	
@@ -24,6 +24,7 @@ public class MakeJobCondition {
 	public void setKj(int M) {
 //		int Kj = RandomNumber.createUniformRand(1, M-1);
 //		this.Kj = Kj;
+		
 		//とりあえず工程数は機械台数と同じにする
 		this.Kj = M;
 	}
@@ -37,13 +38,17 @@ public class MakeJobCondition {
 	}
 	
 	//各工程を処理する機械番号を決定(1~Mの番号をランダムに並び替えている)
-	public void setPM() {
+	public void setPM(int M) {
 		ArrayList<Integer> PM = new ArrayList<Integer>();
 		for(int k=1;k<=this.Kj;k++) {
 			PM.add(k);
 			Collections.shuffle(PM);
 			this.PM=PM;
 		}
+		for(int count=0;count<=M;count++) { //適当な回数シャッフル
+			Collections.shuffle(PM);
+		}
+		this.PM=PM;
 	}
 	
 	//納期決定(納期=作業時間合計＊0.8とする)
@@ -52,9 +57,10 @@ public class MakeJobCondition {
 		for(int k=1;k<=Kj;k++) {
 			SumPT = SumPT+this.PT.get(k-1);
 		}
-		Double due = SumPT*0.8;
+		Double due = SumPT*1.5;
 		this.due = due;
 	}
+	
 
 	
 	public int getJobNum() {
@@ -75,6 +81,15 @@ public class MakeJobCondition {
 	
 	public Double getDue() {
 		return this.due;
+	}
+	
+	//納期決定(納期=作業時間合計＊0.8とする)
+	public double get_SumPT() {
+		double SumPT=0;
+		for(int k=1;k<=Kj;k++) {
+			SumPT = SumPT+this.PT.get(k-1);
+		}
+		return SumPT;
 	}
 
 }

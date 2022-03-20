@@ -5,30 +5,21 @@ import java.io.PrintWriter;
 
 public class MakeLP_WA {
 
-	public MakeLP_WA(WorkerCondition workerCon,Condition jobCon,String expDirectoryPath){
-
-		 //動作確認用出力
-		 for(int i=1;i<=3;i++){
-            for(int m=1;m<=3;m++){
-                double alpha=workerCon.getAlpha(i, m);
-                double beta=workerCon.getBeta(i, m);
-                System.out.println("作業者"+i+"の機械"+m+"に対するα="+alpha+",β="+beta+"です");
-            }
-        }
+	public MakeLP_WA(){
 		
 		try {
 			//書き出すlpファイルの定義
-			PrintWriter lp=new PrintWriter(new FileWriter(new File(expDirectoryPath+"/worker.lp")));
+			PrintWriter lp=new PrintWriter(new FileWriter(new File(Constant.expPath+"/worker.lp")));
+			
+			//ジョブと作業者条件
+			Condition jobCon = Constant.jobCon;
+			WorkerCondition workCon = Constant.workCon;
 			//変数の定義
 			int i,j,k,m,PM1,PM2;
-			//ジョブ数を条件クラス「Condition」から取得
-			int J = jobCon.getJobNum();
-			//機械台数を条件クラス「Condition」から取得
-			int M = jobCon.getMachineNum();
-			//作業者人数は機械台数と同じ
-			int I = jobCon.getMachineNum();
-			//ジョブ毎の工程数を条件クラス「Condition」から取得
-			int[] Kj= jobCon.getProcessNum();
+			int J = Constant.J;
+			int M = Constant.M;
+			int I = Constant.M; //作業者人数は機械台数と同じ
+			int[] Kj= Constant.jobCon.getProcessNum();
 
 			//制約式を数える
 			int Count = 1; 
@@ -40,7 +31,7 @@ public class MakeLP_WA {
 			lp.println("minimize"); 
 			lp.println("\\目的関数(1)");
 			lp.print("OBJ:");
-//			//目的関数は総納期遅れ最小化
+//			//目的関数は変動係数の和の最小化
 //			for(i=1;i<=I;i++){
 //				for(m=1;m<=M;m++){
 //					double coefficient = workerCon.getBeta(i,m)/workerCon.getAlpha(i, m);
@@ -57,10 +48,12 @@ public class MakeLP_WA {
 				for(m=1;m<=M;m++){
 					for(j=1;j<=J;j++){
 						for(k=1;k<=Kj[j];k++){
-							double sigma = jobCon.getPT(j, k)*workerCon.getBeta(i,m);
-							lp.print(sigma+"x_"+i+"_"+m);
-							if(i!= I||m!=M||j!=J||k!=Kj[j]){
-								lp.print(" + ");
+							if(jobCon.getPM(j, k)==m) {
+								double sigma = jobCon.getPT(j, k)*workCon.getBeta(i,m);
+								lp.print(sigma+"x_"+i+"_"+m);
+								if(i!= I||m!=M||j!=J||k!=Kj[j]){
+									lp.print(" + ");
+								}
 							}
 						}
 					}
@@ -127,7 +120,7 @@ public class MakeLP_WA {
 				for(m=1;m<=M;m++){
 					for(j=1;j<=J;j++){
 						for(k=1;k<=Kj[j];k++){
-							lp.println("_C"+Count+": μ_"+i+"_"+m+"_"+j+"_"+k+" = "+jobCon.getPT(j,k)*workerCon.getAlpha(i,m));
+							lp.println("_C"+Count+": μ_"+i+"_"+m+"_"+j+"_"+k+" = "+jobCon.getPT(j,k)*workCon.getAlpha(i,m));
 							Count++;
 						}
 					}
@@ -140,7 +133,7 @@ public class MakeLP_WA {
 				for(m=1;m<=M;m++){
 					for(j=1;j<=J;j++){
 						for(k=1;k<=Kj[j];k++){
-							lp.println("_C"+Count+": sig_"+i+"_"+m+"_"+j+"_"+k+" = "+jobCon.getPT(j,k)*0.2*workerCon.getBeta(i,m));
+							lp.println("_C"+Count+": sig_"+i+"_"+m+"_"+j+"_"+k+" = "+jobCon.getPT(j,k)*0.2*workCon.getBeta(i,m));
 							Count++;
 						}
 					}
@@ -153,7 +146,7 @@ public class MakeLP_WA {
 				for(m=1;m<=M;m++){
 					for(j=1;j<=J;j++){
 						for(k=1;k<=Kj[j];k++){
-							double coefficient = workerCon.getBeta(i,m)/workerCon.getAlpha(i, m);
+							double coefficient = workCon.getBeta(i,m)/workCon.getAlpha(i, m);
 							lp.println("_C"+Count+": CV_"+i+"_"+m+"_"+j+"_"+k+" = "+coefficient);
 							Count++;
 						}

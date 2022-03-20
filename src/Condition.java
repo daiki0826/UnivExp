@@ -16,10 +16,10 @@ public class Condition {
 	/*
 	 * コンストラクタ(実験条件のインスタンス作成)
 	 */
-	public Condition(int J, int M, String DataSetPath) {
-		this.DataSetPath = DataSetPath;
-		this.J = J;
-		this.M = M;
+	public Condition(String dataSetPath) {
+		this.DataSetPath = dataSetPath;
+		this.J = Constant.J;
+		this.M = Constant.M;
 		this.Due = new Double[J+1];//配列番号とジョブ番号を揃えるためにJ+1個の配列を用意
 		this.JobCons = new JobCondition[J+1];//配列番号とジョブ番号を揃えるためにJ+1個の配列を用意
 		this.setDue();
@@ -31,7 +31,7 @@ public class Condition {
 		BufferedReader br = null;
 		try {
 			//指定のファイルを読み込む
-			String path = this.DataSetPath+"/Due.csv";
+			String path = Constant.jobSetPath+"/Due.csv";
 			FileInputStream inputFile  = new FileInputStream(path);
 			InputStreamReader isp = new InputStreamReader(inputFile);
 			br = new BufferedReader(isp);

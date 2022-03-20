@@ -12,24 +12,39 @@ public class MakeWorkerSet {
     public static void main(String[] args) {
 		
         //機械台数(ここを変更すれば任意の人数の作業者セットを作成できる)
-		int M=5;
+		int M=3;
+		int advanced = 1; //上級者の人数
+		int intermediate = 1; //中級者の人数
+		int beginner = 1; //初級者の人数
        
         //作業者を機械台数分だけ生成
 		MakeWorker[] workers = new MakeWorker[M+1];
-        for(int i=1;i<=M;i++){
-            workers[i] = new MakeWorker(i, M);
-        }
-
-        exportWorkerCSV(M,workers);	
+		if(M==advanced+intermediate+beginner) { //機械台数と作業者数が一致しているか判定
+			int count = 0;
+			while(count<=advanced) {
+				 workers[count] = new MakeWorker(count, M,1);
+				 count++;
+			}
+			while(count<=advanced+intermediate) {
+				 workers[count] = new MakeWorker(count, M,2);
+				 count++;
+			}
+			while(count<=advanced+intermediate+beginner) {
+				 workers[count] = new MakeWorker(count, M,3);
+				 count++;
+			}
+	        exportWorkerCSV(M,workers);	
+		}else {
+			System.out.println("機械台数と作業者数が一致しません．");
+		}
 	}
 
     public static void exportWorkerCSV(int M, MakeWorker[] workers){
         //保存先の絶対パス
 		String path = "/Users/nagatadaiki/ExpData/WorkerSet/";
-
         //新しいデータセットを作るときは"Set"の後の番号変える
         //M(作業者の人数)の値に応じたディレクトリに保存
-        String dataSetNum = String.valueOf(M)+"Worker/Set1";
+        String dataSetNum = String.valueOf(M)+"Worker/set9";
 
         //指定のパスにディレクトリを作成(指定のパスは"/Users/nagatadaiki/ExpData/%dWorker/Set1")
 		Path p = Paths.get(path,dataSetNum);
