@@ -1,7 +1,6 @@
 package MakeData;
 
 import java.util.Random;
-
 /*
 * 作業者生成クラス
 */
@@ -11,6 +10,7 @@ public class MakeWorker {
     private int workerNum;
     private double[] alpha;
     private double[] beta;
+    private double[] lambda;
     private int skill_level;
     private int M;
     
@@ -36,6 +36,7 @@ public class MakeWorker {
     	Random rand = new Random();
     	this.alpha = new double[this.M+1];
     	this.beta = new double[this.M+1];
+    	this.lambda = new double[this.M+1];
     	switch(skill_level){
         case 1:
             for(int k=1;k<=this.M;k++){
@@ -44,14 +45,16 @@ public class MakeWorker {
                 double val3 = ((double)Math.round((val1+val2) * 100))/100;
 //            	this.alpha[k] = val3;
 //            	this.beta[k] = val3;
-                this.alpha[k] = 0.5;
-            	this.beta[k] = 0.5;
+                this.alpha[k] = 0.8;
+            	this.beta[k] = 0.16;
+            	this.lambda[k]=2.5;
             }
             break;
         case 2:
             for(int k=1;k<=this.M;k++){
             	this.alpha[k] = 1.0;
-            	this.beta[k] = 1.0;
+            	this.beta[k] = 0.2;
+            	this.lambda[k]=2.0;
             }
             break;
         case 3:
@@ -61,8 +64,9 @@ public class MakeWorker {
                 double val3 = ((double)Math.round((val1+val2) * 100))/100;
 //            	this.alpha[k] = val3;
 //            	this.beta[k] = val3;
-                this.alpha[k] = 1.5;
-            	this.beta[k] = 1.5;
+                this.alpha[k] = 1.2;
+            	this.beta[k] = 0.24;
+            	this.lambda[k]=1.67;
             }
             break;
     }
@@ -161,6 +165,10 @@ public class MakeWorker {
         return this.beta;
     }
     
+    //各機械に対するλを取得
+    public double[] getlambda(){
+        return this.lambda;
+    }
 
 
 }

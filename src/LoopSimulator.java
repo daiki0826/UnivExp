@@ -36,18 +36,51 @@ public class LoopSimulator {
 		this.Myu = new double[Constant.J+1][Constant.M+1];
 		this.Sig = new double[Constant.J+1][Constant.M+1];
 		this.set_Myu_Sig();
-		this.set_RealPT(LoopNum);
+		this.set_RealPT_normal(LoopNum);
+		//this.set_RealPT_erlang(LoopNum);
 		this.LoopNum = LoopNum;
 	}
 	
 	//ジョブj工程kの作業時間の実現値を正規乱数から決定
-	public void set_RealPT(int LoopNum) {
+	public void set_RealPT_normal(int LoopNum) {
 		for(int count=1;count<=LoopNum;count++) {
 			Double[][] PT_temp = new Double[Constant.J+1][Constant.M+1];
 			for(int j=1;j<=Constant.J;j++) {
 				for(int k=1;k<=Constant.M;k++) {
-					PT_temp[j][k] = RandomNumber.createNormalRand(this.Myu[j][k], this.Sig[j][k]);
-					//PT_temp[j][k] = RandomNumber.createUniformRand_Double(6*this.Sig[j][k], this.Myu[j][k]-3*this.Sig[j][k]);
+					while(true){//正規分布(範囲制限)
+						double rand_value = RandomNumber.createNormalRand(this.Myu[j][k],this.Sig[j][k]);
+						if(this.Myu[j][k]-3*this.Sig[j][k]<=rand_value&&rand_value<=this.Myu[j][k]+3*this.Sig[j][k]) {
+							PT_temp[j][k] = rand_value;
+							break;
+						}
+					}
+					//PT_temp[j][k] = RandomNumber.createNormalRand(this.Myu[j][k], this.Sig[j][k]);//正規分布(全範囲)
+				}
+			}
+			this.PT_Re.add(PT_temp);
+		}
+	}
+	
+	//ジョブj工程kの作業時間の実現値を一様乱数から決定
+	public void set_RealPT_uniform(int LoopNum) {
+		for(int count=1;count<=LoopNum;count++) {
+			Double[][] PT_temp = new Double[Constant.J+1][Constant.M+1];
+			for(int j=1;j<=Constant.J;j++) {
+				for(int k=1;k<=Constant.M;k++) {
+					PT_temp[j][k] = RandomNumber.createUniformRand_Double(6*this.Sig[j][k], this.Myu[j][k]-3*this.Sig[j][k]);//一様分布
+				}
+			}
+			this.PT_Re.add(PT_temp);
+		}
+	}
+	
+	//ジョブj工程kの作業時間の実現値をアーラン乱数から決定
+	public void set_RealPT_erlang(int LoopNum) {
+		for(int count=1;count<=LoopNum;count++) {
+			Double[][] PT_temp = new Double[Constant.J+1][Constant.M+1];
+			for(int j=1;j<=Constant.J;j++) {
+				for(int k=1;k<=Constant.M;k++) {
+					PT_temp[j][k] = RandomNumber.createErlangRand(2,2.0,Constant.jobCon.getPT(j, k));
 				}
 			}
 			this.PT_Re.add(PT_temp);

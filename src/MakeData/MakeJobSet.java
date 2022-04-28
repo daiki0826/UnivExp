@@ -17,8 +17,8 @@ public class MakeJobSet {
 	
 	public static void main(String[] args) {
 		
-		int J=3;
-		int M=3;
+		int J=9;
+		int M=9;
 		
 		for(int count=1;count<=20;count++) {
 			String filepath = "/Users/nagatadaiki/ExpData/JobData/"+String.valueOf(M)+"Machine/"+String.valueOf(J)+"J"+String.valueOf(M)+"M/set"+String.valueOf(count);

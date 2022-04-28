@@ -9,12 +9,14 @@ public class Worker {
     private int workerNum;
     private double[] alpha;
     private double[] beta;
+    private double[] lambda;
 
     //コンストラクタ(作業者のインスタンス作成)
     public Worker(int i,String fileName){
         this.workerNum = i;
         this.alpha = new double[Constant.M+1];
         this.beta = new double[Constant.M+1];
+        this.lambda = new double[Constant.M+1];
 		this.setWorkerCondition(fileName);
     }
 
@@ -33,6 +35,7 @@ public class Worker {
 					String data[] = line.split(",");
 					this.alpha[row] = Double.parseDouble(data[1]);
 					this.beta[row] = Double.parseDouble(data[2]);
+					//this.lambda[row] = Double.parseDouble(data[3]);
 				}
 				row++;
 			}
@@ -68,6 +71,11 @@ public class Worker {
     //各機械に対するβを取得
     public double[] getBeta(){
         return this.beta;
+    }
+    
+    //各機械に対するλを取得
+    public double[] getlambda(){
+        return this.lambda;
     }
     
 }

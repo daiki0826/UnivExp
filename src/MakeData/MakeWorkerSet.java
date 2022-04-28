@@ -12,10 +12,10 @@ public class MakeWorkerSet {
     public static void main(String[] args) {
 		
         //機械台数(ここを変更すれば任意の人数の作業者セットを作成できる)
-		int M=3;
-		int advanced = 1; //上級者の人数
-		int intermediate = 1; //中級者の人数
-		int beginner = 1; //初級者の人数
+		int M=10;
+		int advanced = 0; //上級者の人数
+		int intermediate = 10; //中級者の人数
+		int beginner = 0; //初級者の人数
        
         //作業者を機械台数分だけ生成
 		MakeWorker[] workers = new MakeWorker[M+1];
@@ -44,7 +44,7 @@ public class MakeWorkerSet {
 		String path = "/Users/nagatadaiki/ExpData/WorkerSet/";
         //新しいデータセットを作るときは"Set"の後の番号変える
         //M(作業者の人数)の値に応じたディレクトリに保存
-        String dataSetNum = String.valueOf(M)+"Worker/set9";
+        String dataSetNum = String.valueOf(M)+"Worker/set1";
 
         //指定のパスにディレクトリを作成(指定のパスは"/Users/nagatadaiki/ExpData/%dWorker/Set1")
 		Path p = Paths.get(path,dataSetNum);
@@ -87,6 +87,8 @@ public class MakeWorkerSet {
                 pw.print("alpha");
                 pw.print(",");
                 pw.print("beta");
+                pw.print(",");
+                pw.print("lambda");
                 pw.println();
                 for(int k=1;k<=M;k++){
                     pw.print(k);
@@ -94,6 +96,8 @@ public class MakeWorkerSet {
                     pw.print(workers[i].getAlpha()[k]);
                     pw.print(",");
                     pw.print(workers[i].getBeta()[k]);
+                    pw.print(",");
+                    pw.print(workers[i].getlambda()[k]);
                     pw.println();
                 }
                 pw.close();

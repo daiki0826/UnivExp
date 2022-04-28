@@ -21,8 +21,9 @@ public class Experiment {
 		if(jobSetFile.mkdir()) {
 			System.out.println("実験ディレクトリの作成に成功しました");
 		}
-		Constant.jobCon = new Condition(Constant.jobSetPath);
 		Constant.workCon = new WorkerCondition();
+		Constant.jobCon = new Condition(Constant.jobSetPath);
+		
 	}
 	
 	//作業者配置LPファイル作成
@@ -52,6 +53,18 @@ public class Experiment {
 		System.out.println("ジョブショップ問題のLPファイルを作成しました");
 	}
 	
+	//ジョブショップ問題LPファイル作成
+	public void makeLP_2() {
+		//矩形集合を用いた定式化によるLPファイル
+		Condition detailCondition = new Condition(Constant.expPath);
+		this.detailCon = detailCondition;
+		for(int margin=0;margin<=20;margin+=2) { //余力0σ~2σまで0.2刻みで
+			double margin2 = (double)margin/10;
+			MakeLP_2 makeLP_2 = new MakeLP_2(detailCondition,margin2);
+		}
+		System.out.println("ジョブショップ問題のLPファイルを作成しました");
+	}
+	
 	//ジョブショップ問題求解してxmlファイル作成
 	public void solveLP() {
 //		int count = 0; //ループ回数カウント
@@ -73,7 +86,7 @@ public class Experiment {
 		
 		int count = 0; //ループ回数カウント
 		LoopSimulator LS = new LoopSimulator(500);
-		for(int margin=0;margin<=20;margin+=2) { //余力+0σ~+2σまで0.2刻みで順に求解していく
+		for(int margin=0;margin<=30;margin+=2) { //余力+0σ~+2σまで0.2刻みで順に求解していく
 			double margin2 = (double)margin/10;
 			System.out.println("margin = "+margin2);
 			String LPFilePath = Constant.expPath+"/jobshop_"+String.valueOf(margin2)+"σ.lp";
@@ -88,6 +101,28 @@ public class Experiment {
 			//this.loopSimulation(ST, CT, margin2,objval[count]);
 			LS.loopSimulation(ST,CT,margin2,objval[count]);
 			count++;
+		}
+		System.out.println("ジョブショップ問題を求解できました");
+	}
+	
+	public void solveLP_gurobi() {
+		int count = 0; //ループ回数カウント
+		LoopSimulator LS = new LoopSimulator(500);
+		for(int margin=0;margin<=30;margin+=10) { //余力+0σ~+2σまで0.2刻みで順に求解していく
+			double margin2 = (double)margin/10;
+			System.out.println("margin = "+margin2);
+			String LPFilePath = Constant.expPath+"/jobshop_"+String.valueOf(margin2)+"σ.lp";
+			SolveLP_gurobi solveLP_g = new SolveLP_gurobi(LPFilePath);
+//			LogFile.writeLog(Constant.expPath, "Total_Tardiness_"+String.valueOf(margin2)+" = "+solveLP.getObjval());
+//			this.objval[count] = solveLP.getObjval();
+//			double[][]ST = solveLP.getGUNTST();
+//			double[][]CT = solveLP.getGUNTCT();
+//			Output output = new Output(ST,CT,this.detailCon);
+//			output.MakeGunt(Constant.expPath+"/Schedule_"+String.valueOf(margin2)+"σ.xml");
+//			System.out.println("シミュレーションを開始します");
+//			//this.loopSimulation(ST, CT, margin2,objval[count]);
+//			LS.loopSimulation(ST,CT,margin2,objval[count]);
+//			count++;
 		}
 		System.out.println("ジョブショップ問題を求解できました");
 	}

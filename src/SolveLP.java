@@ -44,6 +44,7 @@ public class SolveLP {
 			this.objval = objval;
 			System.out.println("目的関数 :"+objval);
 			//LogFile.writeLog(Constant.expPath, "Scheduling_OBJValue = "+objval);
+			LogFile.writeLog(Constant.expPath, "計算時間 : "+(end-start));
 			//出た解をxに前から順番に出力
 			IloLPMatrix lp = (IloLPMatrix) cplex.LPMatrixIterator().next();
 			double[] x=(cplex.getValues(lp));

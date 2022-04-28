@@ -39,4 +39,9 @@ public class WorkerCondition {
         return this.workers[i].getBeta()[m];
     }
     
+    //任意の作業者の任意の機械に対するλの値を取得
+    public double getlambda(int i,int m){
+        return this.workers[i].getlambda()[m];
+    }
+    
 }
